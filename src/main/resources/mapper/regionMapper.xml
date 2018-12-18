@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.tour.mapper.RegionMapper">
+
+    <select id="selectAllRegion" resultType="com.project.tour.domain.Region">
+    SELECT *
+    FROM TB_REGION
+    WHERE lang = #{lang}
+    AND del_yn = 'N'
+    </select>
+
+    <select id="selectRegion" parameterType="int" resultType="com.project.tour.domain.Region">
+    SELECT *
+    FROM TB_REGION
+    WHERE 1=1
+    AND seq = #{seq}
+    AND del_yn = 'N'
+    </select>
+
+    <insert id="insertRegion" parameterType="com.project.tour.domain.Region">
+        INSERT INTO tb_region(title,lang) values (#{title} , #{lang})
+    </insert>
+
+    <update id="deleteRegion" parameterType="int">
+        UPDATE tb_region
+        SET del_yn = 'Y'
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateRegion" parameterType="com.project.tour.domain.Region">
+        UPDATE tb_region
+        SET title = #{title}
+        , lang = #{lang}
+        WHERE seq = #{seq}
+        AND DEL_YN = 'N'
+    </update>
+
+</mapper>

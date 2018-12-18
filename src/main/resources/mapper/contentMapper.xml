@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.tour.mapper.RegionMapper">
+
+    <select id="selectAllRegion" resultType="com.project.tour.domain.Region">
+    SELECT *
+    FROM TB_REGION
+    WHERE lang = #{lang}
+    AND del_yn = 'N'
+    </select>
+
+
+</mapper>

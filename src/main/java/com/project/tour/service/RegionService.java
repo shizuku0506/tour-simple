@@ -1,16 +1,52 @@
 package com.project.tour.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.project.tour.domain.Region;
 
-@Slf4j
-@Service
-@Transactional
-public class RegionService
+import java.util.List;
+import java.util.Map;
+
+public interface RegionService
 {
-	public void test1(){
 
-	}
+    /**
+     * 지역 생성
+     *
+     * @param region
+     * @return
+     */
+    public int addRegion(Region region);
+
+    /**
+     * 전체 지역 조회
+     *
+     * @param header
+     * @return
+     */
+    public List<Region> getAllRegion(Map header);
+
+    /**
+     * 지역 조회
+     *
+     * @param seq
+     * @return
+     */
+    public Region getRegion(int seq);
+
+    /**
+     * 지역 수정
+     *
+     * @param region
+     * @return
+     */
+    public int editRegion(Region region);
+
+    /**
+     * 지역 삭제
+     *
+     * @param seq
+     * @return
+     */
+    public int removeRegion(int seq);
+
 
 }

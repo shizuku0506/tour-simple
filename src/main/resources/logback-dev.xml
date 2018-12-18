@@ -10,10 +10,10 @@
     </appender>
 
     <!-- put your loggers here -->
-    <logger name="org.springframework.web" additivity="false" level="INFO">
+    <logger name="org.springframework.web" additivity="false" level="debug">
         <appender-ref ref="CONSOLE" />
     </logger>
-    <logger name="com.project.tour" additivity="false" level="INFO">
+    <logger name="com.project.tour" additivity="false" level="debug">
         <appender-ref ref="CONSOLE" />
     </logger>
 
