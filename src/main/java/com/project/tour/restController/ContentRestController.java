@@ -1,13 +1,12 @@
 package com.project.tour.restController;
 
 import com.project.tour.domain.Content;
+import com.project.tour.service.ContentService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Api(description = "컨텐츠 API", basePath = "/content")
@@ -24,24 +22,13 @@ import java.util.Map;
 public class ContentRestController
 {
     @Autowired
-    private String a;
+    private ContentService contentService;
 
-    @ApiOperation(value = "지역 조회 - 전체", notes = "<pre>지역 정보 전체를 조회한다.</pre>")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Accept-Language", value = "조회될 언어 파라메터(헤더)", required = false,
-                    dataType = "string", paramType = "header", defaultValue = "ko", example = "ko, en")
-    })
+    @ApiOperation(value = "콘텐츠 조회 - 전체", notes = "<pre>콘텐츠 정보 전체를 조회한다.</pre>")
     @GetMapping(value = {""})
-    public ResponseEntity<List> getAllRegion(@RequestHeader Map header)
+    public ResponseEntity<List<Content>> getAllRegion(
+            @ApiParam(value = "Accept-Language", required = true, defaultValue = "ko") @RequestHeader(value = "Accept-Language", defaultValue = "ko") String lang)
     {
-        // 200, 204, 206
-//        List<Region> resultList = regionService.getAllRegion(header);
-        List<Content> contentList = null;
-
-        if (contentList == null)
-        {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity(contentList, HttpStatus.OK);
+        return contentService.getAllContent(lang);
     }
 }

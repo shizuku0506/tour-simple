@@ -21,4 +21,14 @@ public class ProjectUtils
         }
         return (String) header.get(ProjectConstant.HEADER_ACCEPT_LANG);
     }
+
+    public static String getAccpetLanguage(String lang)
+    {
+        log.debug(lang);
+        if (lang.indexOf(',') != -1)
+        {
+            lang = lang.substring(0, lang.indexOf(','));
+        }
+        return lang;
+    }
 }

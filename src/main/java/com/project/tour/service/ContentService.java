@@ -1,7 +1,8 @@
 package com.project.tour.service;
 
 import com.project.tour.domain.Content;
-import com.project.tour.domain.Region;
+import com.project.tour.domain.Content;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -10,43 +11,43 @@ public interface ContentService
 {
 
     /**
-     * 컨텐츠 생성
+     * 콘텐츠 생성
      *
      * @param content
      * @return
      */
-    public int addContent(Content content);
+    public ResponseEntity<Content> addContent(Content content);
 
     /**
-     * 전체 컨텐츠 조회
+     * 전체 콘텐츠 조회
      *
-     * @param header
+     * @param lang
      * @return
      */
-    public List<Content> getAllContent(Map header);
+    public ResponseEntity<List<Content>> getAllContent(String lang);
 
     /**
-     * 컨텐츠 조회
+     * 콘텐츠 조회
      *
      * @param seq
      * @return
      */
-    public Content getContent(int seq);
+    public ResponseEntity<Content> getContent(int seq);
 
     /**
-     * 컨텐츠 수정
+     * 콘텐츠 수정
      *
      * @param content
      * @return
      */
-    public int editContent(Content content);
+    public ResponseEntity<Content> editContent(Content content);
 
     /**
-     * 컨텐츠 삭제
+     * 콘텐츠 삭제
      *
      * @param seq
      * @return
      */
-    public int removeContent(int seq);
+    public ResponseEntity<Content> removeContent(int seq);
 
 }

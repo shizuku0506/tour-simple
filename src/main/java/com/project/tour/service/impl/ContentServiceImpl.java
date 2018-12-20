@@ -5,6 +5,9 @@ import com.project.tour.mapper.ContentMapper;
 import com.project.tour.service.ContentService;
 import com.project.tour.util.ProjectUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,39 +20,45 @@ import java.util.Map;
 @Transactional
 public class ContentServiceImpl implements ContentService
 {
-
-    @Override
-    public List<Content> getAllContent(Map header)
-    {
-        String lang = ProjectUtils.getAccpetLanguage(header);
-        List<Content> contentList= contentMapper.selectAllContent(lang);
-        return contentList;
-    }
-
     @Resource
     private ContentMapper contentMapper;
 
     @Override
-    public int addContent(Content content)
-    {
-        return 0;
-    }
-
-    @Override
-    public Content getContent(int seq)
+    public ResponseEntity<Content> addContent(Content content)
     {
         return null;
     }
 
     @Override
-    public int editContent(Content content)
+    public ResponseEntity<List<Content>> getAllContent(String lang)
     {
-        return 0;
+        lang = ProjectUtils.getAccpetLanguage(lang);
+        List<Content> contentList= contentMapper.selectAllContent(lang);
+
+        if (CollectionUtils.isEmpty(contentList))
+        {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity(contentList, HttpStatus.OK);
     }
 
     @Override
-    public int removeContent(int seq)
+    public ResponseEntity<Content> getContent(int seq)
     {
-        return 0;
+        return null;
     }
+
+    @Override
+    public ResponseEntity<Content> editContent(Content content)
+    {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Content> removeContent(int seq)
+    {
+        return null;
+    }
+
+
 }
