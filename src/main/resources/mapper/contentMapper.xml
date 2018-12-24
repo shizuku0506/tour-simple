@@ -4,13 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.tour.mapper.ContentMapper">
+<!--
+    <resultMap id="TotContent" type="com.project.tour.domain.Content">
+        <association property=""
+    </resultMap>
+    -->
 
-    <select id="selectAllContent" resultType="com.project.tour.domain.Content">
-        SELECT *
-        FROM TB_CONTENT
-        WHERE 1 = 1
-          AND lang = #{lang}
-          AND del_yn = 'N'
+    <select id="selectAllContent" parameterType="string" resultType="com.project.tour.domain.Content">
+SELECT
+    A.SEQ AS seq,
+        A.TITLE AS title,
+        A.DESCRIPTION AS description,
+        A.LANG AS lang,
+        A.CREATE_DT AS createDt,
+        A.UPDATE_DT AS updateDt,
+        A.DEL_YN AS delYn,
+        B.MIME_TP AS mimeTp
+FROM TB_CONTENT A
+         LEFT JOIN TB_STORAGE B ON A.SEQ = B.CON_SEQ
+WHERE 1=1
+  AND A.LANG = #{lang}
     </select>
 
 
