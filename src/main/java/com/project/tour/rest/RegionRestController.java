@@ -1,4 +1,4 @@
-package com.project.tour.restController;
+package com.project.tour.rest;
 
 import com.project.tour.domain.Region;
 import com.project.tour.service.RegionService;
@@ -38,8 +38,9 @@ public class RegionRestController
     }
 
     @ApiOperation(value = "지역 등록", notes = "<pre>지역 정보를 저장한다.</pre>")
-    @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE},
-            produces = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(value = "",
+            consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity addRegion(@ApiParam(name = "region", value = "지역정보 데이터", required = true) @RequestBody Region region)
     {
         return regionService.addRegion(region);

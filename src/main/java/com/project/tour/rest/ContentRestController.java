@@ -1,4 +1,4 @@
-package com.project.tour.restController;
+package com.project.tour.rest;
 
 import com.project.tour.domain.Content;
 import com.project.tour.service.ContentService;

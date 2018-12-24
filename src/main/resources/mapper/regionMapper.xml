@@ -22,6 +22,9 @@
 
     <insert id="insertRegion" parameterType="com.project.tour.domain.Region">
         INSERT INTO tb_region(title,lang) values (#{title} , #{lang})
+        <selectKey keyProperty="seq" resultType="Integer" order="AFTER">
+        SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
     <update id="deleteRegion" parameterType="int">
