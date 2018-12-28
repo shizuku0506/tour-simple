@@ -41,11 +41,29 @@ public class ContentRestController
 
     @ApiOperation(value = "콘텐츠 등록", notes = "<pre>콘텐츠 정보를 저장한다.</pre>")
     @PostMapping(value = "",
-            consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE},
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity addRegion(@ApiParam(name = "region", value = "콘텐츠정보 데이터", required = true) @RequestBody Content content)
+    public ResponseEntity addRegion(@ApiParam(name = "region", value = "콘텐츠정보 데이터", required = true) @ModelAttribute Content content)
     {
         return contentService.addContent(content);
+    }
+
+    // TODO 콘텐츠에 대한 첨부파일만 따로 저장하는 기능이 필요함 Patch로 파일만 업로드/메타만 변경 또한 풀로 저장하는 PUT도 필요
+
+    @ApiOperation(value = "콘텐츠 수정", notes = "<pre>콘텐츠 정보를 수정한다.</pre>")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "seq", value = "콘텐츠 고유키(정수형의 숫자)", required = true, dataType = "string",
+                    paramType = "path", defaultValue = "", example = "")
+    })
+    @PutMapping(value = "/{seq}",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity editRegion(@PathVariable int seq,
+                                     @ApiParam(name = "region", value = "콘텐츠정보 데이터", required = true) @ModelAttribute Content content)
+    {
+        content.setSeq(seq);
+        log.info("#############" + content.toString());
+        return contentService.editContent(content);
     }
 
     @ApiOperation(value = "콘텐츠 삭제", notes = "<pre>콘텐츠 정보를 삭제한다.</pre>")
@@ -58,15 +76,4 @@ public class ContentRestController
         return contentService.removeContent(seq);
     }
 
-    @ApiOperation(value = "콘텐츠 수정", notes = "<pre>콘텐츠 정보를 수정한다.</pre>")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "seq", value = "콘텐츠 고유키(정수형의 숫자)", required = true, dataType = "string", paramType = "path", defaultValue = "", example = "")
-    })
-    @PatchMapping(value = "/{seq}", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity editRegion(@PathVariable int seq,
-                                     @ApiParam(name = "region", value = "콘텐츠정보 데이터", required = true) @RequestBody Content content)
-    {
-        content.setSeq(seq);
-        return contentService.editContent(content);
-    }
 }

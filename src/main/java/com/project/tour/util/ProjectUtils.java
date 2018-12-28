@@ -2,7 +2,10 @@ package com.project.tour.util;
 
 import com.project.tour.ProjectConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Slf4j
@@ -30,5 +33,18 @@ public class ProjectUtils
             lang = lang.substring(0, lang.indexOf(','));
         }
         return lang;
+    }
+
+    public static String getDate(String pattern)
+    {
+        SimpleDateFormat sdf = null;
+        if (StringUtils.isBlank(pattern))
+        {
+            sdf = new SimpleDateFormat(ProjectUtils.getDate(pattern));
+        } else
+        {
+            sdf = new SimpleDateFormat(pattern);
+        }
+        return sdf.format(new Date());
     }
 }

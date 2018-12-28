@@ -4,27 +4,47 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.tour.mapper.ContentMapper">
-<!--
-    <resultMap id="TotContent" type="com.project.tour.domain.Content">
-        <association property=""
-    </resultMap>
-    -->
 
-    <select id="selectAllContent" parameterType="string" resultType="com.project.tour.domain.Content">
-SELECT
-    A.SEQ AS seq,
-        A.TITLE AS title,
-        A.DESCRIPTION AS description,
-        A.LANG AS lang,
-        A.CREATE_DT AS createDt,
-        A.UPDATE_DT AS updateDt,
-        A.DEL_YN AS delYn,
-        B.MIME_TP AS mimeTp
-FROM TB_CONTENT A
-         LEFT JOIN TB_STORAGE B ON A.SEQ = B.CON_SEQ
-WHERE 1=1
-  AND A.LANG = #{lang}
+    <resultMap id="contentResult" type="com.project.tour.domain.Content">
+        <collection property="storageList" javaType="ArrayList" column="seq"
+                    ofType="com.project.tour.domain.Storage" select="selectContentForStorage"/>
+    </resultMap>
+
+    <select id="selectContent" resultMap="contentResult" parameterType="com.project.tour.domain.Content">
+        SELECT *
+        FROM TB_CONTENT
+        WHERE 1 = 1
+        <if test="lang != null and lang != ''">
+            AND LANG = #{lang}
+        </if>
+        <if test="seq != null and seq != ''">
+            AND SEQ = #{seq}
+        </if>
     </select>
 
+    <select id="selectContentForStorage" resultType="com.project.tour.domain.Storage">
+        SELECT *
+        FROM TB_STORAGE
+        WHERE con_seq = #{seq}
+    </select>
+
+    <insert id="insertContent" parameterType="com.project.tour.domain.Content">
+        INSERT INTO TB_CONTENT (title, description, lang)
+        VALUES (#{title}, #{description}, #{lang})
+        <selectKey keyProperty="seq" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="insertStorage" parameterType="com.project.tour.domain.Storage">
+
+        INSERT INTO TB_STORAGE (con_seq, file_size, file_path, file_nm, real_file_nm, file_ext, running_sec,
+                                file_status, mime_tp)
+        VALUES
+        <foreach collection="list" item="item" separator=" , ">
+            (#{item.conSeq}, #{item.fileSize}, #{item.filePath}, #{item.fileNm}, #{item.realFileNm}, #{item.fileExt}, #{item.runningSec},
+            #{item.fileStatus}, #{item.mimeTp})
+        </foreach>
+    </insert>
 
 </mapper>

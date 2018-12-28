@@ -35,5 +35,6 @@ public class Content
 
     private List<Storage> storageList;
 
-    private List<MultipartFile> fileList;
+    //    private MultipartFile[] files;
+    private List<MultipartFile> files;
 }
