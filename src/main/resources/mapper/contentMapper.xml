@@ -47,4 +47,21 @@
         </foreach>
     </insert>
 
+    <update id="updateRegion" parameterType="com.project.tour.domain.Content">
+        UPDATE tb_content
+        SET
+        update_dt = CURRENT_TIMESTAMP()
+        <if test="title != null and title != ''">
+            , title = #{title}
+        </if>
+        <if test="description != null and description != ''">
+            , description = #{description}
+        </if>
+        <if test="lang != null and lang != ''">
+            , lang = #{lang}
+        </if>
+        WHERE SEQ = #{seq}
+        AND DEL_YN != 'Y'
+    </update>
+
 </mapper>

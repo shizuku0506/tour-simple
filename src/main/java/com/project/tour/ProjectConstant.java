@@ -8,6 +8,16 @@ public class ProjectConstant
 
     public transient static final String DEF_DATE_FORMAT = "yyyyMMdd";
 
+    public transient static final String THUMBNAIL_PREFIX = "thumb_";
+
+    public transient static final String THUMBNAIL_EXTENSION = "jpg";
+
+    public transient static final int THUMBNAIL_WIDTH = 480;
+
+    public transient static final String[] ALLOW_VIDEO_EXTENSIONS = {
+            "avi", "mp4", "flv", "wmv", "mov"
+    };
+
     public enum ENCODING_STATUS
     {
         init("I", "초기값"), running("R", "진행중"), complate("C", "완료");

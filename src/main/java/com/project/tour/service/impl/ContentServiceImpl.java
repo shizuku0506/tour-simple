@@ -57,7 +57,7 @@ public class ContentServiceImpl implements ContentService
         } catch (IOException e)
         {
             log.error(e.getMessage());
-            throw new InternalServerException();
+            throw new InternalServerException(e);
         }
 
         // 3. 파일 메타정보 삽입
@@ -96,7 +96,7 @@ public class ContentServiceImpl implements ContentService
 
                 uFile = new File(destPath, rFileName + "." + ext);
 
-                // excute upload
+                // real excute upload
                 multipartFile.transferTo(uFile);
 
                 storage = new Storage();
@@ -116,6 +116,7 @@ public class ContentServiceImpl implements ContentService
                         storage.setFileStatus(ProjectConstant.ENCODING_STATUS.init.getCode());
                     } else
                     {
+                        videoUtils.makeThumbnail(uFile);
                         storage.setRunningSec((long) format.duration);
                         storage.setFileStatus(ProjectConstant.ENCODING_STATUS.complate.getCode());
                     }
@@ -163,7 +164,29 @@ public class ContentServiceImpl implements ContentService
     }
 
     @Override
-    public ResponseEntity<Content> editContent(Content content)
+    public ResponseEntity<Content> updatePatchContent(Content content)
+    {
+        List<Content> contentList = contentMapper.selectContent(content);
+
+        if (CollectionUtils.size(contentList) != 1)
+        {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+
+        // why? 0
+        int result = contentMapper.updateRegion(content);
+
+        if (result == 1)
+        {
+            return new ResponseEntity<Content>(contentMapper.selectContent(content).get(0), HttpStatus.OK);
+        } else
+        {
+            throw new InternalServerException();
+        }
+    }
+
+    @Override
+    public ResponseEntity<Content> updatePutContent(Content content)
     {
         return null;
     }

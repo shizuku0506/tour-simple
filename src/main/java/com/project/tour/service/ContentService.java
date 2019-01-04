@@ -35,12 +35,20 @@ public interface ContentService
     public ResponseEntity<Content> getContent(int seq);
 
     /**
-     * 콘텐츠 수정
+     * 콘텐츠 수정 - 메타데이터
      *
      * @param content
      * @return
      */
-    public ResponseEntity<Content> editContent(Content content);
+    public ResponseEntity<Content> updatePatchContent(Content content);
+
+    /**
+     * 콘텐츠 수정 - 메타 + 파일
+     *
+     * @param content
+     * @return
+     */
+    public ResponseEntity<Content> updatePutContent(Content content);
 
     /**
      * 콘텐츠 삭제

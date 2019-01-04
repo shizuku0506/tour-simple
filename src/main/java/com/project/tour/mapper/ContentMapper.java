@@ -14,4 +14,6 @@ public interface ContentMapper
     int insertContent(Content content);
 
     int insertStorage(List<Storage> storageList);
+
+    int updateRegion(Content content);
 }

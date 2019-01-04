@@ -20,36 +20,78 @@ public class ContentRestController
     @Autowired
     private ContentService contentService;
 
+    /**
+     * 전체 리스트 조회
+     *
+     * @param lang
+     * @return
+     */
     @ApiOperation(value = "콘텐츠 조회 - 전체", notes = "<pre>콘텐츠 정보 전체를 조회한다.</pre>")
     @GetMapping(value = {""})
-    public ResponseEntity<List<Content>> getAllRegion(
+    public ResponseEntity<List<Content>> getAllContent(
             @ApiParam(value = "Accept-Language", required = true, defaultValue = "ko") @RequestHeader(value = "Accept-Language", defaultValue = "ko") String lang)
     {
         return contentService.getAllContent(lang);
     }
 
+    /**
+     * 단일 항목 조회
+     *
+     * @param seq
+     * @return
+     */
     @ApiOperation(value = "콘텐츠 조회 - 단일", notes = "<pre>콘텐츠 정보 하나를 조회한다.</pre>")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "seq", value = "콘텐츠 고유키(정수형의 숫자)", required = true, dataType = "string", paramType = "path", defaultValue = ""
                     , example = "1"),
     })
     @GetMapping(value = "/{seq}")
-    public ResponseEntity getRegion(@PathVariable int seq)
+    public ResponseEntity getContent(@PathVariable int seq)
     {
         return contentService.getContent(seq);
     }
 
+    /**
+     * 등록
+     *
+     * @param content
+     * @return
+     */
     @ApiOperation(value = "콘텐츠 등록", notes = "<pre>콘텐츠 정보를 저장한다.</pre>")
     @PostMapping(value = "",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity addRegion(@ApiParam(name = "region", value = "콘텐츠정보 데이터", required = true) @ModelAttribute Content content)
+    public ResponseEntity addContent(@ApiParam(name = "content", value = "콘텐츠정보 데이터", required = true) @ModelAttribute Content content)
     {
         return contentService.addContent(content);
     }
 
-    // TODO 콘텐츠에 대한 첨부파일만 따로 저장하는 기능이 필요함 Patch로 파일만 업로드/메타만 변경 또한 풀로 저장하는 PUT도 필요
+    /**
+     * patch 는 메타 데이터만 수정하도록 처리
+     *
+     * @param seq
+     * @param content
+     * @return
+     */
+    @ApiOperation(value = "콘텐츠 수정", notes = "<pre>콘텐츠 수정한다.(메타)</pre>")
+    @PatchMapping(value = "/{seq}"
+            , consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE}
+            , produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.TEXT_PLAIN_VALUE}
+    )
+    public ResponseEntity updatePatchContent(@PathVariable int seq,
+                                             @ApiParam(name = "content", value = "콘텐츠정보 데이터", required = true) @RequestBody Content content)
+    {
+        content.setSeq(seq);
+        return contentService.updatePatchContent(content);
+    }
 
+    /**
+     * put 전체 데이터 수정
+     *
+     * @param seq
+     * @param content
+     * @return
+     */
     @ApiOperation(value = "콘텐츠 수정", notes = "<pre>콘텐츠 정보를 수정한다.</pre>")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "seq", value = "콘텐츠 고유키(정수형의 숫자)", required = true, dataType = "string",
@@ -58,12 +100,17 @@ public class ContentRestController
     @PutMapping(value = "/{seq}",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity editRegion(@PathVariable int seq,
-                                     @ApiParam(name = "region", value = "콘텐츠정보 데이터", required = true) @ModelAttribute Content content)
+    public ResponseEntity updatePutContent(@PathVariable int seq
+                                          , @ApiParam(name = "content", value = "콘텐츠정보 데이터", required = true) @ModelAttribute Content
+ content
+//                                           , @RequestParam(value = "title2" , name = "title2") String title2
+    )
     {
-        content.setSeq(seq);
-        log.info("#############" + content.toString());
-        return contentService.editContent(content);
+        log.info("@@#@#@#@@#");
+//        content.setSeq(seq);
+//        log.info("#############" + content.toString());
+//        return contentService.updatePutContent(content);
+        return null;
     }
 
     @ApiOperation(value = "콘텐츠 삭제", notes = "<pre>콘텐츠 정보를 삭제한다.</pre>")
@@ -71,7 +118,7 @@ public class ContentRestController
             @ApiImplicitParam(name = "seq", value = "콘텐츠 고유키(정수형의 숫자)", required = true, dataType = "string", paramType = "path", defaultValue = "", example = "1")
     })
     @DeleteMapping(value = "/{seq}")
-    public ResponseEntity removeRegion(@PathVariable int seq)
+    public ResponseEntity removeContent(@PathVariable int seq)
     {
         return contentService.removeContent(seq);
     }
